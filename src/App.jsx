@@ -10,7 +10,6 @@ class App extends Component {
     this.state = {
       messages: messageData,
       currentUser: 'Anonymous',
-      msgContent: '',
     }
   }
   componentDidMount() {
@@ -22,6 +21,14 @@ class App extends Component {
     }, 3000);
   }
   render() {
+    function randomId() {
+      const idVariables = '0123456789';
+      let id = '';
+      for (let i = 0; i < 6; i++) {
+        id += idVariables[(Math.floor(Math.random() * idVariables.length))]
+      }
+      return id;
+    }
     const changeContent = (event) => {
       let content = event.target.value;
       this.setState({
@@ -34,15 +41,31 @@ class App extends Component {
         currentUser: newUser,
       })
     }
+    const submitChanges = (event) => {
+      if(event.key === 'Enter') {
+        const oldMessages = this.state.messages;
+        const newMessages = oldMessages.concat({
+          type: 'incomingMessage',
+          id: randomId(),
+          username: this.state.currentUser,
+          content: event.target.value});
+        this.setState({
+          messages: newMessages,
+        })
+        event.target.value = '';
+      }
+    }
+
     return (
       <div>
         <NavBar />
         <MessageList messages={this.state.messages}/>
         <ChatBar 
-          currentUser={this.state.currentUser} 
-          msgContent={this.state.msgContent} 
+          currentUser={this.state.currentUser}
+          messages={this.state.messages} 
           changeContent={changeContent}
-          changeUser={changeUser}/>
+          changeUser={changeUser}
+          submitChanges={submitChanges}/>
       </div>
     );
   }
