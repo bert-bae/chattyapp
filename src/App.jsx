@@ -13,6 +13,7 @@ class App extends Component {
       currentUser: 'Anonymous',
       previousUser: 'Anonymous',
       userCount: 1,
+      userColor: null,
     }
     this.socket = null;
   }
@@ -26,24 +27,41 @@ class App extends Component {
 
     this.socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
+      const oldMessages = this.state.messages;
       switch(data.type) {
         case 'incomingMessage':
-          const oldMessages = this.state.messages;
           const newMessages = oldMessages.concat(data);
           this.setState({
             messages: newMessages,
           })
           break;
         case 'incomingNotification':
-          const oldNotification = this.state.messages;
-          const newNotification = oldNotification.concat(data);
+          const newNotification = oldMessages.concat(data);
           this.setState({
             messages: newNotification,
           })
           break;
-        default:
+        case 'newConnection':
+          const newUser = oldMessages.concat({
+            id: uuidv4(),
+            type: 'incomingNotification',
+            content: `${this.state.currentUser} has connected.`
+          })
           this.setState({
-            userCount: data,
+            messages: newUser,
+            userCount: data.userCount,
+            userColor: data.userColor,
+          })
+          break;
+        default:
+          console.log(data);
+          const userDisconnected = oldMessages.concat({
+            id: uuidv4(),
+            type: 'incomingNotification',
+            content: `${data.userName} has disconnected.`
+          })
+          this.setState({
+            messages: userDisconnected,
           })
       }
     }
@@ -67,6 +85,7 @@ class App extends Component {
         const newMessages = oldMessages.concat({
           id: uuidv4(),
           type: 'incomingNotification',
+          currentUser: this.state.currentUser,
           content: `${this.state.previousUser} changed their name to ${this.state.currentUser}.`,
         });
         this.setState({
@@ -95,7 +114,7 @@ class App extends Component {
     return (
       <div>
         <NavBar userCount={this.state.userCount}/>
-        <MessageList messages={this.state.messages}/>
+        <MessageList messages={this.state.messages} userColor={this.state.userColor}/>
         <ChatBar 
           currentUser={this.state.currentUser}
           messages={this.state.messages} 

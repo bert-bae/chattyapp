@@ -10,17 +10,27 @@ const server = express()
 
 const wss = new SocketServer({ server });
 
+const userColor = () => {
+  const colors = ['#FF0000', '#FFA500', '#0000ff', '#3cb371']
+  return colors[Math.floor(Math.random() * 4)];
+}
+
 wss.on('connection', (ws) => {
   console.log('Client connected.');
-
+  ws.color = userColor();
+  ws.userName = 'Anonymous';
   wss.clients.forEach(function each(client) {
     if (client.readyState === WebSocket.OPEN) {
-      client.send(wss.clients.size);
+      client.send(JSON.stringify({
+        type: 'newConnection',
+        userCount: wss.clients.size,
+        userColor: ws.color,
+      }));
     }
   });
 
   ws.on('message', function incoming(data) {
-    console.log(data);
+    ws.userName = JSON.parse(data).currentUser;
     wss.clients.forEach(function each(client) {
       if (client !== ws && client.readyState === WebSocket.OPEN) {
         client.send(data);
@@ -28,7 +38,16 @@ wss.on('connection', (ws) => {
     });
   })
 
-  ws.on('close', () => {
+  ws.on('close', function close(data) {
+    wss.clients.forEach(function each(client) {
+      if (client !== ws && client.readyState === WebSocket.OPEN) {
+        client.send(JSON.stringify({
+          type: 'userDisconnect',
+          userCount: wss.clients.size,
+          userName: ws.userName,
+        }));
+      }
+    });
     console.log('Closing websocket connection.');
   });
 });
