@@ -8,7 +8,8 @@ class ChatBar extends Component {
           className="chatbar-username" 
           placeholder="Your Name (Optional)" 
           value={this.props.currentUser} 
-          onChange={(event) => this.props.changeUser(event)}/>
+          onChange={(event) => this.props.changeUser(event)}
+          onBlur={() => this.props.userNameNotification()}/>
         <input 
           className="chatbar-message" 
           placeholder="Type a message and hit ENTER" 

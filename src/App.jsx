@@ -10,6 +10,7 @@ class App extends Component {
     this.state = {
       messages: messageData,
       currentUser: 'Anonymous',
+      previousUser: 'Anonymous',
     }
   }
   componentDidMount() {
@@ -41,6 +42,20 @@ class App extends Component {
         currentUser: newUser,
       })
     }
+    const userNameNotification = () => {
+      if(this.state.previousUser !== this.state.currentUser) {
+        const oldMessages = this.state.messages;
+        const newMessages = oldMessages.concat({
+          id: randomId(),
+          type: 'incomingNotification',
+          content: `${this.state.previousUser} changed their name to ${this.state.currentUser}.`,
+        });
+        this.setState({
+          messages: newMessages,
+          previousUser: this.state.currentUser,
+        })
+      }
+    }
     const submitChanges = (event) => {
       if(event.key === 'Enter') {
         const oldMessages = this.state.messages;
@@ -65,7 +80,8 @@ class App extends Component {
           messages={this.state.messages} 
           changeContent={changeContent}
           changeUser={changeUser}
-          submitChanges={submitChanges}/>
+          submitChanges={submitChanges}
+          userNameNotification={userNameNotification}/>
       </div>
     );
   }
