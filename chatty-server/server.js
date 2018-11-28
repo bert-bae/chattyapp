@@ -13,7 +13,14 @@ const wss = new SocketServer({ server });
 wss.on('connection', (ws) => {
   console.log('Client connected.');
 
+  wss.clients.forEach(function each(client) {
+    if (client.readyState === WebSocket.OPEN) {
+      client.send(wss.clients.size);
+    }
+  });
+
   ws.on('message', function incoming(data) {
+    console.log(data);
     wss.clients.forEach(function each(client) {
       if (client !== ws && client.readyState === WebSocket.OPEN) {
         client.send(data);

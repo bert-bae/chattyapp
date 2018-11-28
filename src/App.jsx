@@ -12,6 +12,7 @@ class App extends Component {
       messages: [],
       currentUser: 'Anonymous',
       previousUser: 'Anonymous',
+      userCount: 1,
     }
     this.socket = null;
   }
@@ -22,10 +23,29 @@ class App extends Component {
     );
     this.socket = Websocket;
     console.log('Connected to websocket server');
+
     this.socket.onmessage = (event) => {
-      this.setState({
-        messages: JSON.parse(event.data),
-      })
+      const data = JSON.parse(event.data);
+      switch(data.type) {
+        case 'incomingMessage':
+          const oldMessages = this.state.messages;
+          const newMessages = oldMessages.concat(data);
+          this.setState({
+            messages: newMessages,
+          })
+          break;
+        case 'incomingNotification':
+          const oldNotification = this.state.messages;
+          const newNotification = oldNotification.concat(data);
+          this.setState({
+            messages: newNotification,
+          })
+          break;
+        default:
+          this.setState({
+            userCount: data,
+          })
+      }
     }
   }
   render() {
@@ -53,7 +73,7 @@ class App extends Component {
           messages: newMessages,
           previousUser: this.state.currentUser,
         })
-        this.socket.send(JSON.stringify(this.state.messages));
+        this.socket.send(JSON.stringify(newMessages[newMessages.length - 1]));
       }
     }
     const submitChanges = (event) => {
@@ -68,13 +88,13 @@ class App extends Component {
           messages: newMessages,
         })
         event.target.value = '';
-        this.socket.send(JSON.stringify(this.state.messages));
+        this.socket.send(JSON.stringify(newMessages[newMessages.length - 1]));
       }
     }
 
     return (
       <div>
-        <NavBar />
+        <NavBar userCount={this.state.userCount}/>
         <MessageList messages={this.state.messages}/>
         <ChatBar 
           currentUser={this.state.currentUser}
