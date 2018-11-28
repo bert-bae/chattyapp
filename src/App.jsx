@@ -2,13 +2,14 @@ import React, {Component} from 'react';
 import MessageList from './MessageList.jsx';
 import ChatBar from './ChatBar.jsx';
 import NavBar from './NavBar.jsx';
-import messageData from './sampledata.js';
+import uuidv4 from 'uuid/v4';
+// import messageData from './sampledata.js';
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      messages: messageData,
+      messages: [],
       currentUser: 'Anonymous',
       previousUser: 'Anonymous',
     }
@@ -21,23 +22,13 @@ class App extends Component {
     );
     this.socket = Websocket;
     console.log('Connected to websocket server');
-
-    // console.log('componentDidMount <App />');
-    // setTimeout(() => {
-    //   const newMsg = {id: 10, username: 'Michelle', content: 'Hi there'};
-    //   const messages = this.state.messages.concat(newMsg);
-    //   this.setState({messages: messages})
-    // }, 3000);
+    this.socket.onmessage = (event) => {
+      this.setState({
+        messages: JSON.parse(event.data),
+      })
+    }
   }
   render() {
-    function randomId() {
-      const idVariables = '0123456789';
-      let id = '';
-      for (let i = 0; i < 6; i++) {
-        id += idVariables[(Math.floor(Math.random() * idVariables.length))]
-      }
-      return id;
-    }
     const changeContent = (event) => {
       let content = event.target.value;
       this.setState({
@@ -54,7 +45,7 @@ class App extends Component {
       if(this.state.previousUser !== this.state.currentUser) {
         const oldMessages = this.state.messages;
         const newMessages = oldMessages.concat({
-          id: randomId(),
+          id: uuidv4(),
           type: 'incomingNotification',
           content: `${this.state.previousUser} changed their name to ${this.state.currentUser}.`,
         });
@@ -70,7 +61,7 @@ class App extends Component {
         const oldMessages = this.state.messages;
         const newMessages = oldMessages.concat({
           type: 'incomingMessage',
-          id: randomId(),
+          id: uuidv4(),
           username: this.state.currentUser,
           content: event.target.value});
         this.setState({
