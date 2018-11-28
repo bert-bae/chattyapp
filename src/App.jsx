@@ -12,14 +12,22 @@ class App extends Component {
       currentUser: 'Anonymous',
       previousUser: 'Anonymous',
     }
+    this.socket = null;
   }
+
   componentDidMount() {
-    console.log('componentDidMount <App />');
-    setTimeout(() => {
-      const newMsg = {id: 10, username: 'Michelle', content: 'Hi there'};
-      const messages = this.state.messages.concat(newMsg);
-      this.setState({messages: messages})
-    }, 3000);
+    const Websocket = new WebSocket(
+      'ws://localhost:3001'
+    );
+    this.socket = Websocket;
+    console.log('Connected to websocket server');
+
+    // console.log('componentDidMount <App />');
+    // setTimeout(() => {
+    //   const newMsg = {id: 10, username: 'Michelle', content: 'Hi there'};
+    //   const messages = this.state.messages.concat(newMsg);
+    //   this.setState({messages: messages})
+    // }, 3000);
   }
   render() {
     function randomId() {
@@ -54,6 +62,7 @@ class App extends Component {
           messages: newMessages,
           previousUser: this.state.currentUser,
         })
+        this.socket.send(JSON.stringify(this.state.messages));
       }
     }
     const submitChanges = (event) => {
@@ -68,6 +77,7 @@ class App extends Component {
           messages: newMessages,
         })
         event.target.value = '';
+        this.socket.send(JSON.stringify(this.state.messages));
       }
     }
 

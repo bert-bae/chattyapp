@@ -7,7 +7,7 @@
   },
   "env": {
     "browser": true,
-    "node": true
+    "node": true,
   },
   "rules": {
     "quotes": [2, "single"],
