@@ -22,12 +22,12 @@ Test it out by typing into the chatbar!
 
 ## Images:
 
-(link)
-(link)
-(link)
-(link)
-(link)
-(link)
+(https://github.com/bert-bae/chattyapp/blob/master/src/imgs/chattyappstart.png?raw=true)
+(https://github.com/bert-bae/chattyapp/blob/master/src/imgs/serverstart.png?raw=true)
+(https://github.com/bert-bae/chattyapp/blob/master/src/imgs/test1.png?raw=true)
+(https://github.com/bert-bae/chattyapp/blob/master/src/imgs/test2.png?raw=true)
+(https://github.com/bert-bae/chattyapp/blob/master/src/imgs/test3.png?raw=true)
+(https://github.com/bert-bae/chattyapp/blob/master/src/imgs/test5.png?raw=true)
 
 ## Features:
 
