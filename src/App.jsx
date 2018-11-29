@@ -16,7 +16,6 @@ class App extends Component {
     }
     this.socket = null;
   }
-
   // link with websocket and get updates here
 
   componentDidMount() {
@@ -100,6 +99,9 @@ class App extends Component {
           currentUser: this.state.currentUser,
           content: `${this.state.previousUser} changed their name to ${this.state.currentUser}.`,
         };
+        this.setState({
+          previousUser: this.state.currentUser,
+        })
         this.socket.send(JSON.stringify(newMessages));
       }
     }

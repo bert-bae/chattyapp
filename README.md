@@ -1,5 +1,57 @@
-React Boilerplate
-=====================
+#CHATTY APP (Lighthouse Labs project)
+=====================================
+
+## Description:
+
+This is a Chat application that was created as a part of Lighthouse Lab's program while learning and experimenting with React and Websockets. React is pretty darn amazing!
+
+## How to get started:
+
+Fork and clone this repository to your computer. Install the dependencies and follow the instructions below for accessing the boilerplate if necessary to run the React components.
+
+Go to the main folder and start the server:
+ - npm start (in the main folder)
+
+With a second terminal window, go to the chatty-server folder to start the websocket server:
+ - npm start (in the chatty-server folder)
+
+To test it with multiple windows, open multiple tabs with the following on your computer:
+ - http://localhost:3000/
+
+Test it out by typing into the chatbar!
+
+## Images:
+
+(link)
+(link)
+(link)
+(link)
+(link)
+(link)
+
+## Features:
+
+- Each unique connection:
+  - Can select their own username (or remain the default 'Anonymous').
+  - Be assigned one of 8 colors for their username.
+  - Maintain own unique connection distinct from others.
+  - Color will remain the same even if username changes.
+  - Other users will see the unique color and name that is visible to the main user.
+
+- Domain Specific Languages (implemented so far):
+  - Images can be sent if the link starts with 'http(s)://' and ends with 'jpg || png || gif'
+  - Starting with '/i' (lowercase) will italicize the text.
+  - Starting with '/b' (lowercase) will bold the text.
+
+## Dependencies: 
+- React boiler plate dependencies:
+  - More information at the Boilder Plate github link below
+  - SASS, Webpack, and Babel (instructions below on utilizing the React Boiler Plate for your own projects)
+- "react" (boiler plate version, instructions below)
+- "express": "4.16.4",
+- "ws": "6.1.2"
+
+## How it was created using React Boiler Plate:
 
 A minimal and light dev environment for ReactJS.
 
