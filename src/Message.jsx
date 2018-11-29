@@ -27,7 +27,7 @@ class Message extends Component {
         {msgData.content}
       </div>) :
       (<div className="message">
-        <span className="message-username" style={{'color': this.props.userColor}}>{msgData.username}</span>
+        <span className="message-username" style={{'color': msgData.color}}>{msgData.username}</span>
         <span className="message-content">{imgCheck().msgContent} <br/> {imgCheck().imgLinks}</span>
       </div>)
     )

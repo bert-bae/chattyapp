@@ -35,6 +35,7 @@ class App extends Component {
           })
         case 'incomingMessage':
           const newMessages = oldMessages.concat(data);
+          console.log(data);
           this.setState({
             messages: newMessages,
           })
@@ -109,6 +110,7 @@ class App extends Component {
           type: 'incomingMessage',
           username: this.state.currentUser,
           content: event.target.value,
+          color: this.state.userColor,
         });
         // this.setState({
         //   messages: newMessages,
