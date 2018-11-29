@@ -18,12 +18,15 @@ class App extends Component {
   }
 
   // link with websocket and get updates here
+
   componentDidMount() {
     const Websocket = new WebSocket(
       'ws://localhost:3001'
     );
     this.socket = Websocket;
     console.log('Connected to websocket server');
+
+    const element = document.getElementById('bottom-of-list');
 
     this.socket.onmessage = (event) => {
       const data = JSON.parse(event.data);
@@ -35,16 +38,17 @@ class App extends Component {
           })
         case 'incomingMessage':
           const newMessages = oldMessages.concat(data);
-          console.log(data);
           this.setState({
             messages: newMessages,
           })
+          element.scrollIntoView({behavior: 'smooth'});
           break;
         case 'incomingNotification':
           const newNotification = oldMessages.concat(data);
           this.setState({
             messages: newNotification,
           })
+          element.scrollIntoView({behavior: 'smooth'});
           break;
         case 'newConnection':
           const newUserMessage = oldMessages.concat({
@@ -56,6 +60,7 @@ class App extends Component {
             messages: newUserMessage,
             userCount: data.userCount,
           })
+          element.scrollIntoView({behavior: 'smooth'});
           break;
         default:
           const userDisconnected = oldMessages.concat({
@@ -67,9 +72,11 @@ class App extends Component {
             messages: userDisconnected,
             userCount: data.userCount,
           })
+          element.scrollIntoView({behavior: 'smooth'});
       }
     }
   }
+
   render() {
     // tracks changes to input areas (text box and usename)
     const changeContent = (event) => {
@@ -88,35 +95,26 @@ class App extends Component {
     //triggers when username changes
     const userNameNotification = () => {
       if(this.state.previousUser !== this.state.currentUser) {
-        const oldMessages = this.state.messages;
-        const newMessages = oldMessages.concat({
+        const newMessages = {
           type: 'incomingNotification',
           currentUser: this.state.currentUser,
           content: `${this.state.previousUser} changed their name to ${this.state.currentUser}.`,
-        });
-        // this.setState({
-        //   messages: newMessages,
-        //   previousUser: this.state.currentUser,
-        // })
-        this.socket.send(JSON.stringify(newMessages[newMessages.length - 1]));
+        };
+        this.socket.send(JSON.stringify(newMessages));
       }
     }
 
     //triggers when sending message
     const submitChanges = (event) => {
       if(event.key === 'Enter') {
-        const oldMessages = this.state.messages;
-        const newMessages = oldMessages.concat({
+        const newMessages = {
           type: 'incomingMessage',
           username: this.state.currentUser,
           content: event.target.value,
           color: this.state.userColor,
-        });
-        // this.setState({
-        //   messages: newMessages,
-        // })
+        };
         event.target.value = '';
-        this.socket.send(JSON.stringify(newMessages[newMessages.length - 1]));
+        this.socket.send(JSON.stringify(newMessages));
       }
     }
 

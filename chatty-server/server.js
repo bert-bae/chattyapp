@@ -37,9 +37,33 @@ wss.on('connection', (ws) => {
       if (client.readyState === WebSocket.OPEN) {
         let JSONData = JSON.parse(data);
         JSONData.id = uuidv4();
+
+        // handles images
+        const RegExp = /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/g;
+        if(RegExp.test(JSONData.content)) {
+          JSONData.urls = JSONData.content.match(RegExp);
+          JSONData.content = JSONData.content.replace(RegExp,'');
+          JSONData.modify = 'images';
+        }
+        
+        if (JSONData.content.charAt(0) === '/') {
+          const contentArray = JSONData.content.split(' ');
+          const matchCase = contentArray[0];
+          contentArray.shift();
+          const newContent = contentArray.join(' ');
+          switch (matchCase) {
+            case ('/i'): 
+              JSONData.modify = 'italics';
+              JSONData.content = newContent;
+              break;
+            case ('/b'):
+              JSONData.modify = 'bold';
+              JSONData.content = newContent;
+          }
+        }
         client.send(JSON.stringify(JSONData));
       }
-    });
+    })
   })
 
   ws.on('close', function close(data) {

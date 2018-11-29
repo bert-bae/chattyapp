@@ -10,6 +10,7 @@ class MessageList extends Component {
     return (
       <main className="messages">
         {indMsgs}
+        <div id='bottom-of-list'></div>
       </main>
     )
   }
