@@ -22,12 +22,12 @@ Test it out by typing into the chatbar!
 
 ## Images:
 
-(https://github.com/bert-bae/chattyapp/blob/master/src/imgs/chattyappstart.png?raw=true)
-(https://github.com/bert-bae/chattyapp/blob/master/src/imgs/serverstart.png?raw=true)
-(https://github.com/bert-bae/chattyapp/blob/master/src/imgs/test1.png?raw=true)
-(https://github.com/bert-bae/chattyapp/blob/master/src/imgs/test2.png?raw=true)
-(https://github.com/bert-bae/chattyapp/blob/master/src/imgs/test3.png?raw=true)
-(https://github.com/bert-bae/chattyapp/blob/master/src/imgs/test5.png?raw=true)
+[Start Program](https://github.com/bert-bae/chattyapp/blob/master/src/imgs/chattyappstart.png?raw=true)
+[Start Server](https://github.com/bert-bae/chattyapp/blob/master/src/imgs/serverstart.png?raw=true)
+[Example 1](https://github.com/bert-bae/chattyapp/blob/master/src/imgs/test1.png?raw=true)
+[Example 2](https://github.com/bert-bae/chattyapp/blob/master/src/imgs/test2.png?raw=true)
+[Example 3](https://github.com/bert-bae/chattyapp/blob/master/src/imgs/test3.png?raw=true)
+[Example 4](https://github.com/bert-bae/chattyapp/blob/master/src/imgs/test5.png?raw=true)
 
 ## Features:
 
