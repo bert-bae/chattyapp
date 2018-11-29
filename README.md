@@ -47,9 +47,24 @@ Test it out by typing into the chatbar!
 - React boiler plate dependencies:
   - More information at the Boilder Plate github link below
   - SASS, Webpack, and Babel (instructions below on utilizing the React Boiler Plate for your own projects)
-- "react" (boiler plate version, instructions below)
-- "express": "4.16.4",
-- "ws": "6.1.2"
+- babel-core
+- babel-loader
+- babel-preset-es2015
+- babel-preset-react
+- css-loader
+- node-sass
+- sass-loader
+- sockjs-client
+- style-loader
+- webpack
+- webpack-dev-server
+- react
+- react-dom
+
+#### Dependencies in the chatty-server folder:
+- ws
+- express
+- uuid
 
 ## How it was created using React Boiler Plate:
 
