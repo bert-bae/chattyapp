@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import MessageList from './MessageList.jsx';
 import ChatBar from './ChatBar.jsx';
 import NavBar from './NavBar.jsx';
-import uuidv4 from 'uuid/v4';
 // import messageData from './sampledata.js';
 
 class App extends Component {
@@ -30,6 +29,10 @@ class App extends Component {
       const data = JSON.parse(event.data);
       const oldMessages = this.state.messages;
       switch(data.type) {
+        case 'initialColor':
+          this.setState({
+            userColor: data.userColor,
+          })
         case 'incomingMessage':
           const newMessages = oldMessages.concat(data);
           this.setState({
@@ -43,25 +46,25 @@ class App extends Component {
           })
           break;
         case 'newConnection':
-          const newUser = oldMessages.concat({
-            id: uuidv4(),
+          const newUserMessage = oldMessages.concat({
             type: 'incomingNotification',
+            key: data.key,
             content: `${this.state.currentUser} has connected.`
           })
           this.setState({
-            messages: newUser,
+            messages: newUserMessage,
             userCount: data.userCount,
-            userColor: data.userColor,
           })
           break;
         default:
           const userDisconnected = oldMessages.concat({
-            id: uuidv4(),
             type: 'incomingNotification',
+            key: data.key,
             content: `${data.userName} has disconnected.`
           })
           this.setState({
             messages: userDisconnected,
+            userCount: data.userCount,
           })
       }
     }
@@ -75,9 +78,9 @@ class App extends Component {
       })
     }
     const changeUser = (event) => {
-      let newUser = event.target.value;
+      let newUserMessage = event.target.value;
       this.setState({
-        currentUser: newUser,
+        currentUser: newUserMessage,
       })
     }
 
@@ -86,15 +89,14 @@ class App extends Component {
       if(this.state.previousUser !== this.state.currentUser) {
         const oldMessages = this.state.messages;
         const newMessages = oldMessages.concat({
-          id: uuidv4(),
           type: 'incomingNotification',
           currentUser: this.state.currentUser,
           content: `${this.state.previousUser} changed their name to ${this.state.currentUser}.`,
         });
-        this.setState({
-          messages: newMessages,
-          previousUser: this.state.currentUser,
-        })
+        // this.setState({
+        //   messages: newMessages,
+        //   previousUser: this.state.currentUser,
+        // })
         this.socket.send(JSON.stringify(newMessages[newMessages.length - 1]));
       }
     }
@@ -105,13 +107,12 @@ class App extends Component {
         const oldMessages = this.state.messages;
         const newMessages = oldMessages.concat({
           type: 'incomingMessage',
-          id: uuidv4(),
           username: this.state.currentUser,
           content: event.target.value,
         });
-        this.setState({
-          messages: newMessages,
-        })
+        // this.setState({
+        //   messages: newMessages,
+        // })
         event.target.value = '';
         this.socket.send(JSON.stringify(newMessages[newMessages.length - 1]));
       }

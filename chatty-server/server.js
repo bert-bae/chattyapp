@@ -1,6 +1,7 @@
 const express = require('express');
 const SocketServer = require('ws').Server;
 const WebSocket = require('ws');
+const uuidv4 = require('uuid/v4');
 
 const PORT = 3001;
 
@@ -19,12 +20,13 @@ wss.on('connection', (ws) => {
   console.log('Client connected.');
   ws.color = userColor();
   ws.userName = 'Anonymous';
+  ws.send(JSON.stringify({userColor: ws.color, type: 'initialColor'}));
   wss.clients.forEach(function each(client) {
     if (client.readyState === WebSocket.OPEN) {
       client.send(JSON.stringify({
         type: 'newConnection',
+        key: uuidv4(),
         userCount: wss.clients.size,
-        userColor: ws.color,
       }));
     }
   });
@@ -32,8 +34,10 @@ wss.on('connection', (ws) => {
   ws.on('message', function incoming(data) {
     ws.userName = JSON.parse(data).currentUser;
     wss.clients.forEach(function each(client) {
-      if (client !== ws && client.readyState === WebSocket.OPEN) {
-        client.send(data);
+      if (client.readyState === WebSocket.OPEN) {
+        let JSONData = JSON.parse(data);
+        JSONData.id = uuidv4();
+        client.send(JSON.stringify(JSONData));
       }
     });
   })
@@ -43,6 +47,7 @@ wss.on('connection', (ws) => {
       if (client !== ws && client.readyState === WebSocket.OPEN) {
         client.send(JSON.stringify({
           type: 'userDisconnect',
+          key: uuidv4(),
           userCount: wss.clients.size,
           userName: ws.userName,
         }));
