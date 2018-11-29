@@ -18,6 +18,7 @@ class App extends Component {
     this.socket = null;
   }
 
+  // link with websocket and get updates here
   componentDidMount() {
     const Websocket = new WebSocket(
       'ws://localhost:3001'
@@ -66,6 +67,7 @@ class App extends Component {
     }
   }
   render() {
+    // tracks changes to input areas (text box and usename)
     const changeContent = (event) => {
       let content = event.target.value;
       this.setState({
@@ -78,6 +80,8 @@ class App extends Component {
         currentUser: newUser,
       })
     }
+
+    //triggers when username changes
     const userNameNotification = () => {
       if(this.state.previousUser !== this.state.currentUser) {
         const oldMessages = this.state.messages;
@@ -94,6 +98,8 @@ class App extends Component {
         this.socket.send(JSON.stringify(newMessages[newMessages.length - 1]));
       }
     }
+
+    //triggers when sending message
     const submitChanges = (event) => {
       if(event.key === 'Enter') {
         const oldMessages = this.state.messages;

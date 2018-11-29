@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 
 class Message extends Component {
   render() {
+    //handles accepting images or gifs
     const RegExp = /(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/g;
     let imgLinks = null;
     let msgData = this.props.message;
