@@ -54,7 +54,6 @@ class App extends Component {
           })
           break;
         default:
-          console.log(data);
           const userDisconnected = oldMessages.concat({
             id: uuidv4(),
             type: 'incomingNotification',
@@ -102,7 +101,8 @@ class App extends Component {
           type: 'incomingMessage',
           id: uuidv4(),
           username: this.state.currentUser,
-          content: event.target.value});
+          content: event.target.value,
+        });
         this.setState({
           messages: newMessages,
         })

@@ -11,8 +11,8 @@ const server = express()
 const wss = new SocketServer({ server });
 
 const userColor = () => {
-  const colors = ['#FF0000', '#FFA500', '#0000ff', '#3cb371']
-  return colors[Math.floor(Math.random() * 4)];
+  const colors = ['#FF0000', '#FFA500', '#0000ff', '#3cb371', '#000000', '#A52A2A', '#DC143C', '#8B008B']
+  return colors[Math.floor(Math.random() * colors.length)];
 }
 
 wss.on('connection', (ws) => {
