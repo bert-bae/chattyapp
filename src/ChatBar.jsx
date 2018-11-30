@@ -24,7 +24,6 @@ class ChatBar extends Component {
     };
     return (
       <div>
-        <NimblePicker set='messenger' data={data} onSelect={(event) => this.props.changeContent(event)} style={{marginTop: 20, marginRight: 2, float: 'right', display: this.state.pickerState}}/>
         <footer className="chatbar">
           <input 
             className="chatbar-username" 
@@ -39,7 +38,9 @@ class ChatBar extends Component {
             onChange={(event) => this.props.changeContent(event)}
             onKeyPress={(event) => this.props.submitChanges(event)}/>  
           <Emoji emoji=':smile::skin-tone-3:' size={45} onClick={togglePicker}/>
+          <NimblePicker set='messenger' data={data} onSelect={(event) => this.props.changeContent(event)} style={{position: 'absolute', bottom: 65, right: 10, display: this.state.pickerState}}/>
         </footer>
+        <div id='bottom-of-list'></div>
       </div>
     )
   }
