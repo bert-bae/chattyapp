@@ -19,7 +19,7 @@ const userColor = () => {
 wss.on('connection', (ws) => {
   console.log('Client connected.');
   ws.color = userColor();
-  ws.userName = 'Anonymous';
+  ws.userName = 'Anonywoofs';
   ws.send(JSON.stringify({userColor: ws.color, type: 'initialColor'}));
   wss.clients.forEach(function each(client) {
     if (client.readyState === WebSocket.OPEN) {

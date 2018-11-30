@@ -9,10 +9,11 @@ class App extends Component {
     super(props);
     this.state = {
       messages: [],
-      currentUser: 'Anonymous',
-      previousUser: 'Anonymous',
+      currentUser: 'Anonywoofs',
+      previousUser: 'Anonywoofs',
       userCount: 1,
       userColor: null,
+      msgContent: '',
     }
     this.socket = null;
   }
@@ -79,7 +80,13 @@ class App extends Component {
   render() {
     // tracks changes to input areas (text box and usename)
     const changeContent = (event) => {
-      let content = event.target.value;
+      let oldContent = this.state.msgContent;
+      let content = '';
+      if (event.native) {
+        content = oldContent + event.native;
+      } else {
+        content += event.target.value;
+      }
       this.setState({
         msgContent: content,
       })
@@ -115,7 +122,9 @@ class App extends Component {
           content: event.target.value,
           color: this.state.userColor,
         };
-        event.target.value = '';
+        this.setState({
+          msgContent: '',
+        })
         this.socket.send(JSON.stringify(newMessages));
       }
     }
@@ -127,6 +136,7 @@ class App extends Component {
         <ChatBar 
           currentUser={this.state.currentUser}
           messages={this.state.messages} 
+          msgContent={this.state.msgContent}
           changeContent={changeContent}
           changeUser={changeUser}
           submitChanges={submitChanges}
