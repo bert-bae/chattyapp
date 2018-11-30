@@ -43,6 +43,9 @@ Test it out by typing into the chatbar!
   - Starting with '/i' (lowercase) will italicize the text.
   - Starting with '/b' (lowercase) will bold the text.
 
+- Updated as of November 30: Native emoji's available.
+  - Emoji selector is in the right of the chatbar.
+
 ## Dependencies: 
 - React boiler plate dependencies:
   - More information at the Boilder Plate github link below
